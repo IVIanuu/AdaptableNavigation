@@ -35,7 +35,6 @@ abstract class FragmentStateSwapperAdapter(private val fm: FragmentManager) : Sw
     private val fragments = ArrayList<Fragment?>()
 
     private var currentTransaction: FragmentTransaction? = null
-    private var currentPrimaryItem: Fragment? = null
 
     override fun startUpdate(container: ViewGroup) {}
 
@@ -74,16 +73,6 @@ abstract class FragmentStateSwapperAdapter(private val fm: FragmentManager) : Sw
     }
 
     @SuppressLint("CommitTransaction")
-    override fun clearItem(container: ViewGroup, position: Int, item: Any) {
-        if (currentTransaction == null) {
-            currentTransaction = fm.beginTransaction()
-        }
-        savedState.clear()
-        fragments[position] = null
-        currentTransaction?.detach(item as Fragment)
-    }
-
-    @SuppressLint("CommitTransaction")
     override fun destroyItem(container: ViewGroup, position: Int, item: Any) {
         val fragment = item as Fragment
         if (currentTransaction == null) {
@@ -98,21 +87,6 @@ abstract class FragmentStateSwapperAdapter(private val fm: FragmentManager) : Sw
         fragments[position] = null
 
         currentTransaction?.remove(fragment)
-    }
-
-    override fun setPrimaryItem(container: ViewGroup, position: Int, item: Any) {
-        val fragment = item as Fragment
-        if (fragment != currentPrimaryItem) {
-            currentPrimaryItem?.let {
-                it.setMenuVisibility(false)
-                it.userVisibleHint = false
-            }
-
-            fragment.setMenuVisibility(true)
-            fragment.userVisibleHint = true
-
-            currentPrimaryItem = fragment
-        }
     }
 
     override fun finishUpdate(container: ViewGroup) {

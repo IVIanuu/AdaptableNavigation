@@ -35,10 +35,6 @@ abstract class SwapperAdapter {
 
     abstract fun destroyItem(container: ViewGroup, position: Int, item: Any)
 
-    open fun clearItem(container: ViewGroup, position: Int, item: Any) {}
-
-    abstract fun setPrimaryItem(container: ViewGroup, position: Int, item: Any) 
-
     abstract fun finishUpdate(container: ViewGroup)
 
     abstract fun getCount(): Int

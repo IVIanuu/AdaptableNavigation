@@ -31,7 +31,6 @@ import com.ivianuu.adaptablenavigation.SwapperAdapter
 abstract class FragmentSwapperAdapter(private val fm: FragmentManager) : SwapperAdapter() {
 
     private var currentTransaction: FragmentTransaction? = null
-    private var currentPrimaryItem: Fragment? = null
 
     override fun startUpdate(container: ViewGroup) {
         if (container.id == View.NO_ID) {
@@ -61,10 +60,8 @@ abstract class FragmentSwapperAdapter(private val fm: FragmentManager) : Swapper
             )
         }
 
-        if (fragment != currentPrimaryItem) {
-            fragment.setMenuVisibility(false)
-            fragment.userVisibleHint = false
-        }
+        fragment.setMenuVisibility(true)
+        fragment.userVisibleHint = true
 
         return fragment
     }
@@ -75,22 +72,12 @@ abstract class FragmentSwapperAdapter(private val fm: FragmentManager) : Swapper
             currentTransaction = fm.beginTransaction()
         }
 
-        currentTransaction?.detach(item as Fragment)
-    }
-
-    override fun setPrimaryItem(container: ViewGroup, position: Int, item: Any) {
         val fragment = item as Fragment
-        if (fragment != currentPrimaryItem) {
-            currentPrimaryItem?.let {
-                it.setMenuVisibility(false)
-                it.userVisibleHint = false
-            }
 
-            fragment.setMenuVisibility(true)
-            fragment.userVisibleHint = true
+        fragment.setMenuVisibility(false)
+        fragment.userVisibleHint = false
 
-            currentPrimaryItem = fragment
-        }
+        currentTransaction?.detach(fragment)
     }
 
     override fun finishUpdate(container: ViewGroup) {

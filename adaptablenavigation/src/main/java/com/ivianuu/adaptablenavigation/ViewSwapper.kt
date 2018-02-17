@@ -94,11 +94,7 @@ class ViewSwapper @JvmOverloads constructor(
         val adapter = this.adapter ?: return
         val item = items[currentItem]?.item ?: return
 
-        if (currentItem == position) {
-            adapter.clearItem(this, currentItem, item)
-        } else if (adapter.getCount() > 0) {
-            adapter.destroyItem(this, currentItem, item)
-        }
+        adapter.destroyItem(this, currentItem, item)
 
         showItemInternal(position)
     }
