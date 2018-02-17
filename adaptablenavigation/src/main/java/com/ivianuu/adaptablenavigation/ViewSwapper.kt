@@ -37,6 +37,7 @@ class ViewSwapper @JvmOverloads constructor(
                 it.startUpdate(this)
                 items
                     .filterNotNull()
+                    .filter { it.item != null }
                     .forEach { item -> it.destroyItem(this, item.position, item.item!!) }
                 it.finishUpdate(this)
                 items.clear()
@@ -153,7 +154,6 @@ class ViewSwapper @JvmOverloads constructor(
 
         while (i < items.size) {
             val ii = items[i] ?: continue
-            val pos = ii.position
             val item = ii.item ?: continue
 
             val newPos = adapter.getItemPosition(item)
@@ -169,9 +169,9 @@ class ViewSwapper @JvmOverloads constructor(
                     adapter.startUpdate(this)
                     isUpdating = true
                 }
-                adapter.destroyItem(this, pos, item)
+                adapter.destroyItem(this, ii.position, item)
                 needPopulate = true
-                if (currentItem == pos) {
+                if (currentItem == ii.position) {
                     newCurrItem = Math.max(0, Math.min(currentItem, adapter.getCount() - 1))
                     needPopulate = true
                 }
@@ -179,8 +179,8 @@ class ViewSwapper @JvmOverloads constructor(
                 continue
             }
 
-            if (pos != newPos) {
-                if (pos == currentItem) {
+            if (ii.position != newPos) {
+                if (ii.position == currentItem) {
                     newCurrItem = newPos
                 }
                 ii.position = newPos
@@ -210,5 +210,5 @@ class ViewSwapper @JvmOverloads constructor(
         val superState: Parcelable?
     ) : Parcelable
     
-    data class ItemInfo(var item: Any? = null, var position: Int)
+    private data class ItemInfo(var item: Any? = null, var position: Int)
 }

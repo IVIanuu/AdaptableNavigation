@@ -68,7 +68,7 @@ abstract class FragmentStateSwapperAdapter(private val fm: FragmentManager) : Sw
         fragment.userVisibleHint = true
         
         fragments[position] = fragment
-        currentTransaction!!.add(container.id, fragment)
+        currentTransaction?.add(container.id, fragment)
         return fragment
     }
 
