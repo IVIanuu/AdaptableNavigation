@@ -6,7 +6,6 @@
       <module fileurl="file://$PROJECT_DIR$/adaptablenavigation/adaptablenavigation.iml" filepath="$PROJECT_DIR$/adaptablenavigation/adaptablenavigation.iml" />
       <module fileurl="file://$PROJECT_DIR$/adaptablenavigation-supportdesign/adaptablenavigation-supportdesign.iml" filepath="$PROJECT_DIR$/adaptablenavigation-supportdesign/adaptablenavigation-supportdesign.iml" />
       <module fileurl="file://$PROJECT_DIR$/adaptablenavigation-supportfragments/adaptablenavigation-supportfragments.iml" filepath="$PROJECT_DIR$/adaptablenavigation-supportfragments/adaptablenavigation-supportfragments.iml" />
-      <module fileurl="file://C:\Users\IVIanuu\AndroidStudioProjects\AdaptableNavigation\sample\app.iml" filepath="C:\Users\IVIanuu\AndroidStudioProjects\AdaptableNavigation\sample\app.iml" />
       <module fileurl="file://$PROJECT_DIR$/sample/sample.iml" filepath="$PROJECT_DIR$/sample/sample.iml" />
     </modules>
   </component>

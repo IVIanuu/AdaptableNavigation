@@ -32,14 +32,18 @@ class ViewSwapper @JvmOverloads constructor(
     var adapter: SwapperAdapter? = null
         set(value) {
             // clean up old adapter
-            field?.let {
-                it.setViewSwapperObserver(null)
-                it.startUpdate(this)
+            field?.let { oldAdapter ->
+                oldAdapter.setViewSwapperObserver(null)
+                oldAdapter.startUpdate(this)
                 items
                     .filterNotNull()
-                    .filter { it.item != null }
-                    .forEach { item -> it.destroyItem(this, item.position, item.item!!) }
-                it.finishUpdate(this)
+                    .forEach { item ->
+                        val innerItem = item.item
+                        if (innerItem != null) {
+                            oldAdapter.destroyItem(this, item.position, innerItem)
+                        }
+                    }
+                oldAdapter.finishUpdate(this)
                 items.clear()
             }
 

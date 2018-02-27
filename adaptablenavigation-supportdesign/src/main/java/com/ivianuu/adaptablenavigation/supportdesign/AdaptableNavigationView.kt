@@ -20,6 +20,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Parcelable
 import android.support.design.widget.NavigationView
+import android.support.v4.widget.DrawerLayout
 import android.util.AttributeSet
 import android.view.MenuItem
 import com.ivianuu.adaptablenavigation.ViewSwapper
@@ -81,9 +82,14 @@ class AdaptableNavigationView @JvmOverloads constructor(
                 if (menu.getItem(i).itemId == item.itemId) {
                     selectedPosition = i
                     viewSwapper.showItemAt(selectedPosition)
+                    val parent = parent
+                    if (parent is DrawerLayout) {
+                        parent.closeDrawers()
+                    }
                     break
                 }
             }
+
 
             return true
         }
