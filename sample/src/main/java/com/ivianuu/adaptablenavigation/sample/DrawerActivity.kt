@@ -32,5 +32,4 @@ class DrawerActivity : AppCompatActivity() {
         view_swapper.adapter = PageAdapter(supportFragmentManager)
         navigation_view.setupWithViewSwapper(view_swapper)
     }
-
 }

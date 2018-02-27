@@ -92,6 +92,6 @@ abstract class FragmentSwapperAdapter(private val fm: FragmentManager) : Swapper
     }
 
     private fun makeFragmentName(viewId: Int, id: Long): String {
-        return "android:switcher:$viewId:$id"
+        return "swapper:$viewId:$id"
     }
 }
