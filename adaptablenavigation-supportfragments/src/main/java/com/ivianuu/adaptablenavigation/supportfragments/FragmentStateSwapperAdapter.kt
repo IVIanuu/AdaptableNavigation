@@ -83,7 +83,11 @@ abstract class FragmentStateSwapperAdapter(private val fm: FragmentManager) : Sw
             savedState.add(null)
         }
 
-        savedState[position] = fm.saveFragmentInstanceState(fragment)
+        savedState[position] = if (fragment.isAdded) {
+            fm.saveFragmentInstanceState(fragment)
+        } else {
+            null
+        }
         fragments[position] = null
 
         if (fragment.isAdded) {
