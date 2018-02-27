@@ -86,7 +86,9 @@ abstract class FragmentStateSwapperAdapter(private val fm: FragmentManager) : Sw
         savedState[position] = fm.saveFragmentInstanceState(fragment)
         fragments[position] = null
 
-        currentTransaction?.remove(fragment)
+        if (fragment.isAdded) {
+            currentTransaction?.remove(fragment)
+        }
     }
 
     override fun finishUpdate(container: ViewGroup) {

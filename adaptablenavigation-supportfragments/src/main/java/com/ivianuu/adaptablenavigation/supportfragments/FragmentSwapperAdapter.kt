@@ -77,7 +77,9 @@ abstract class FragmentSwapperAdapter(private val fm: FragmentManager) : Swapper
         fragment.setMenuVisibility(false)
         fragment.userVisibleHint = false
 
-        currentTransaction?.detach(fragment)
+        if (fragment.isAdded) {
+            currentTransaction?.detach(fragment)
+        }
     }
 
     override fun finishUpdate(container: ViewGroup) {
