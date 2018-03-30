@@ -73,6 +73,10 @@ class AdaptableBottomNavigationView @JvmOverloads constructor(
         val viewSwapper: ViewSwapper
     ) : OnNavigationItemSelectedListener {
 
+        init {
+            viewSwapper.showItemAt(selectedPosition)
+        }
+
         override fun onNavigationItemSelected(item: MenuItem): Boolean {
             for (i in 0 until menu.size()) {
                 if (menu.getItem(i).itemId == item.itemId) {

@@ -74,6 +74,10 @@ class AdaptableNavigationView @JvmOverloads constructor(
         val viewSwapper: ViewSwapper
     ) : OnNavigationItemSelectedListener {
 
+        init {
+            viewSwapper.showItemAt(selectedPosition)
+        }
+
         override fun onNavigationItemSelected(item: MenuItem): Boolean {
             val handled = viewChangeListener?.onNavigationItemSelected(item) ?: false
             if (handled) return true
