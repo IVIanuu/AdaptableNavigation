@@ -41,7 +41,7 @@ class PageAdapter(fm: FragmentManager) : FragmentSwapperAdapter(fm) {
         }
     }
 
-    override fun getCount(): Int = 3
+    override fun getCount() = 3
 
 }
 
@@ -62,7 +62,15 @@ abstract class PageFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        page.text = title
+        page.text = "Page $title"
+
+        detail_button.setOnClickListener {
+            activity!!.supportFragmentManager!!.beginTransaction()
+                .replace(android.R.id.content, DetailFragment.newInstance(title))
+                .addToBackStack("detail_$title")
+                .commit()
+        }
+
         d { "on view created" }
     }
 

@@ -45,7 +45,7 @@ class MainFragment : Fragment() {
 
     private fun navigateTo(fragment: Fragment) {
         fragmentManager!!.beginTransaction()
-            .replace(android.R.id.content, fragment)
+            .replace(android.R.id.content, fragment, "container")
             .addToBackStack(null)
             .commit()
     }

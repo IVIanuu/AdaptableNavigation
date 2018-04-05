@@ -16,57 +16,39 @@
 
 package com.ivianuu.adaptablenavigation.sample
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.ivianuu.adaptablenavigation.supportdesign.d
+import kotlinx.android.synthetic.main.fragment_detail.*
 
 /**
  * @author Manuel Wrage (IVIanuu)
  */
-class ContainerFragment : Fragment() {
+class DetailFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_container, container, false)
+        return inflater.inflate(R.layout.fragment_detail, container, false)
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        d { "on view created $savedInstanceState" }
-
-        val type = arguments!!.getString("type")
-
-        if (childFragmentManager.findFragmentByTag(type) == null) {
-            val fragment = when(type) {
-                "bottom_nav" -> BottomBarFragment()
-                "drawer" -> DrawerFragment()
-                else -> throw IllegalArgumentException("unknown type")
-            }
-
-            childFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, fragment, type)
-                .commitNow()
-        }
+        title.text = "Detail title ${arguments!!.get("title")}"
     }
 
     companion object {
 
-        fun bottomNav() = ContainerFragment().apply {
+        fun newInstance(title: String) = DetailFragment().apply {
             arguments = Bundle().apply {
-                putString("type", "bottom_nav")
-            }
-        }
-
-        fun drawer() = ContainerFragment().apply {
-            arguments = Bundle().apply {
-                putString("type", "drawer")
+                putString("title", title)
             }
         }
 

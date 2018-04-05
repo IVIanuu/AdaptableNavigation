@@ -21,9 +21,14 @@ import android.content.Context
 import android.os.Parcelable
 import android.support.design.widget.BottomNavigationView
 import android.util.AttributeSet
+import android.util.Log
 import android.view.MenuItem
 import com.ivianuu.adaptablenavigation.ViewSwapper
 import kotlinx.android.parcel.Parcelize
+
+fun Any.d(message: () -> String) {
+    Log.d(this::class.java.simpleName, message())
+}
 
 /**
  * A [BottomNavigationView] which can be used with a [ViewSwapper]
@@ -39,10 +44,12 @@ class AdaptableBottomNavigationView @JvmOverloads constructor(
     private var selectedPosition = 0
 
     override fun onSaveInstanceState(): Parcelable {
+        d { "on save instance state" }
         return SavedState(selectedPosition, super.onSaveInstanceState())
     }
 
     override fun onRestoreInstanceState(state: Parcelable?) {
+        d { "on restore instance state" }
         if (state !is SavedState) {
             super.onRestoreInstanceState(state)
             return

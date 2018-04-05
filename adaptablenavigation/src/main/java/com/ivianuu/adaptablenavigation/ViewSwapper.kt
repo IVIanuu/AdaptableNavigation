@@ -61,7 +61,7 @@ class ViewSwapper @JvmOverloads constructor(
                     showItemInternal(currentRestoredItem)
                     currentRestoredItem = -1
                     restoredAdapterState = null
-                } else if (!firstLayout) {
+                } else if (value.getCount() > 0) {
                     showItemInternal(0)
                 }
             }
@@ -69,8 +69,6 @@ class ViewSwapper @JvmOverloads constructor(
 
     var currentItem: Int = 0
         private set
-
-    var firstLayout = true
 
     private val items = ArrayList<ItemInfo?>()
     private val observer = object : DataSetObserver() {
@@ -88,8 +86,6 @@ class ViewSwapper @JvmOverloads constructor(
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
-
-        firstLayout = false
 
         adapter?.let {
             if (currentRestoredItem < 0 && it.getCount() > 0) {
