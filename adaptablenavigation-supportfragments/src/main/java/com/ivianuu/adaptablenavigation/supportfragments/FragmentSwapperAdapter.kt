@@ -28,6 +28,7 @@ import com.ivianuu.adaptablenavigation.SwapperAdapter
  * A [SwapperAdapter] for [Fragment]'s
  * Basically it replicates the behavior of on FragmentPagerAdapter
  */
+@SuppressLint("CommitTransaction")
 abstract class FragmentSwapperAdapter(private val fm: FragmentManager) : SwapperAdapter() {
 
     private var currentTransaction: FragmentTransaction? = null
@@ -38,7 +39,6 @@ abstract class FragmentSwapperAdapter(private val fm: FragmentManager) : Swapper
         }
     }
 
-    @SuppressLint("CommitTransaction")
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
         if (currentTransaction == null) {
             currentTransaction = fm.beginTransaction()
@@ -66,7 +66,6 @@ abstract class FragmentSwapperAdapter(private val fm: FragmentManager) : Swapper
         return fragment
     }
 
-    @SuppressLint("CommitTransaction")
     override fun destroyItem(container: ViewGroup, position: Int, item: Any) {
         if (currentTransaction == null) {
             currentTransaction = fm.beginTransaction()
@@ -76,10 +75,7 @@ abstract class FragmentSwapperAdapter(private val fm: FragmentManager) : Swapper
 
         fragment.setMenuVisibility(false)
         fragment.userVisibleHint = false
-
-        if (fragment.isAdded) {
-            currentTransaction?.detach(fragment)
-        }
+        currentTransaction?.detach(fragment)
     }
 
     override fun finishUpdate(container: ViewGroup) {

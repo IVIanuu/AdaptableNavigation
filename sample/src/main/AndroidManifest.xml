@@ -10,9 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".BottomBarActivity"/>
+        <activity android:name=".BottomBarFragment"/>
 
-        <activity android:name=".DrawerActivity"/>
+        <activity android:name=".DrawerFragment"/>
 
         <activity android:name=".MainActivity">
             <intent-filter>

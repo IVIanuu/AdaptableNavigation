@@ -51,7 +51,9 @@ class AdaptableBottomNavigationView @JvmOverloads constructor(
         super.onRestoreInstanceState(state.superState)
 
         selectedPosition = state.selectedPosition
-        menu.getItem(selectedPosition).isChecked = true
+        if (menu.size() > 0) {
+            menu.getItem(selectedPosition).isChecked = true
+        }
     }
 
     override fun setOnNavigationItemSelectedListener(listener: OnNavigationItemSelectedListener?) {
@@ -72,10 +74,6 @@ class AdaptableBottomNavigationView @JvmOverloads constructor(
     private inner class ViewSwapperOnItemSelectedListener(
         val viewSwapper: ViewSwapper
     ) : OnNavigationItemSelectedListener {
-
-        init {
-            viewSwapper.showItemAt(selectedPosition)
-        }
 
         override fun onNavigationItemSelected(item: MenuItem): Boolean {
             for (i in 0 until menu.size()) {

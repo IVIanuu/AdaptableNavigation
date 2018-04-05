@@ -17,20 +17,29 @@
 package com.ivianuu.adaptablenavigation.sample
 
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
-import kotlinx.android.synthetic.main.activity_bottom_navigation.*
+import android.support.v4.app.Fragment
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import kotlinx.android.synthetic.main.fragment_drawer.*
 
 /**
  * @author Manuel Wrage (IVIanuu)
  */
-class BottomBarActivity : AppCompatActivity() {
+class DrawerFragment : Fragment() {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_bottom_navigation)
-
-        view_swapper.adapter = PageAdapter(supportFragmentManager)
-        bottom_bar.setupWithViewSwapper(view_swapper)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        return inflater.inflate(R.layout.fragment_drawer, container, false)
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        view_swapper.adapter = PageAdapter(childFragmentManager)
+        navigation_view.setupWithViewSwapper(view_swapper)
+    }
 }

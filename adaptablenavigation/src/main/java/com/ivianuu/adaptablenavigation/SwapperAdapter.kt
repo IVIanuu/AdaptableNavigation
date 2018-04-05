@@ -33,6 +33,10 @@ abstract class SwapperAdapter {
 
     abstract fun instantiateItem(container: ViewGroup, position: Int): Any
 
+    open fun clearItem(container: ViewGroup, position: Int, item: Any) {
+        destroyItem(container, position, item)
+    }
+
     abstract fun destroyItem(container: ViewGroup, position: Int, item: Any)
 
     abstract fun finishUpdate(container: ViewGroup)

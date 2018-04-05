@@ -17,8 +17,8 @@
 package com.ivianuu.adaptablenavigation.supportfragments
 
 import android.annotation.SuppressLint
-import android.os.Parcelable
 import android.os.Bundle
+import android.os.Parcelable
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentTransaction
@@ -29,6 +29,7 @@ import com.ivianuu.adaptablenavigation.SwapperAdapter
  * A [SwapperAdapter] for [Fragment]'s
  * Basically it replicates the behavior of on FragmentStatePagerAdapter
  */
+@SuppressLint("CommitTransaction")
 abstract class FragmentStateSwapperAdapter(private val fm: FragmentManager) : SwapperAdapter() {
 
     private val savedState = ArrayList<Fragment.SavedState?>()
@@ -38,7 +39,6 @@ abstract class FragmentStateSwapperAdapter(private val fm: FragmentManager) : Sw
 
     override fun startUpdate(container: ViewGroup) {}
 
-    @SuppressLint("CommitTransaction")
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
         if (fragments.size > position) {
             val f = fragments[position]
@@ -72,7 +72,17 @@ abstract class FragmentStateSwapperAdapter(private val fm: FragmentManager) : Sw
         return fragment
     }
 
-    @SuppressLint("CommitTransaction")
+    override fun clearItem(container: ViewGroup, position: Int, item: Any) {
+        val fragment = item as Fragment
+        if (currentTransaction == null) {
+            currentTransaction = fm.beginTransaction()
+        }
+
+        savedState.clear()
+        fragments[position] = null
+        currentTransaction?.detach(fragment)
+    }
+
     override fun destroyItem(container: ViewGroup, position: Int, item: Any) {
         val fragment = item as Fragment
         if (currentTransaction == null) {
@@ -90,9 +100,7 @@ abstract class FragmentStateSwapperAdapter(private val fm: FragmentManager) : Sw
         }
         fragments[position] = null
 
-        if (fragment.isAdded) {
-            currentTransaction?.remove(fragment)
-        }
+        currentTransaction?.remove(fragment)
     }
 
     override fun finishUpdate(container: ViewGroup) {
@@ -111,11 +119,11 @@ abstract class FragmentStateSwapperAdapter(private val fm: FragmentManager) : Sw
 
         for (i in 0 until fragments.size) {
             val f = fragments[i]
-            if (f != null) {
+            if (f != null && f.isAdded) {
                 if (state == null) {
                     state = Bundle()
                 }
-                val key = "f" + i
+                val key = "f$i"
                 fm.putFragment(state, key, f)
             }
         }

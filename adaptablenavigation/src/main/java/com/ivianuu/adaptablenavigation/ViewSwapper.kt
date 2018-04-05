@@ -38,12 +38,12 @@ class ViewSwapper @JvmOverloads constructor(
                 items
                     .filterNotNull()
                     .forEach { item ->
-                        val innerItem = item.item
-                        if (innerItem != null) {
-                            oldAdapter.destroyItem(this, item.position, innerItem)
+                        item.item?.let {
+                            oldAdapter.destroyItem(this, item.position, it)
                         }
                     }
                 oldAdapter.finishUpdate(this)
+                currentItem = 0
                 items.clear()
             }
 
@@ -57,16 +57,20 @@ class ViewSwapper @JvmOverloads constructor(
                 value.registerDataSetObserver(observer)
 
                 if (currentRestoredItem >= 0) {
-                    restoredAdapterState?.let { value.restoreState(it) }
+                    restoredAdapterState?.let(value::restoreState)
                     showItemInternal(currentRestoredItem)
                     currentRestoredItem = -1
                     restoredAdapterState = null
+                } else if (!firstLayout) {
+                    showItemInternal(0)
                 }
             }
         }
 
     var currentItem: Int = 0
         private set
+
+    var firstLayout = true
 
     private val items = ArrayList<ItemInfo?>()
     private val observer = object : DataSetObserver() {
@@ -84,6 +88,9 @@ class ViewSwapper @JvmOverloads constructor(
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
+
+        firstLayout = false
+
         adapter?.let {
             if (currentRestoredItem < 0 && it.getCount() > 0) {
                 showItemInternal(0)
@@ -97,7 +104,13 @@ class ViewSwapper @JvmOverloads constructor(
         }
 
         val adapter = this.adapter ?: return
-        items[currentItem]?.item?.let { adapter.destroyItem(this, currentItem, it) }
+
+        if (currentItem == position) {
+            items[currentItem]?.item?.let { adapter.clearItem(this, currentItem, it) }
+        } else {
+            items[currentItem]?.item?.let { adapter.destroyItem(this, currentItem, it) }
+        }
+
         showItemInternal(position)
     }
     
@@ -119,7 +132,7 @@ class ViewSwapper @JvmOverloads constructor(
 
         val adapter = this.adapter
         if (adapter != null) {
-            state.adapterState?.let { adapter.restoreState(it) }
+            state.adapterState?.let(adapter::restoreState)
             showItemInternal(if (state.position >= 0) state.position else 0)
         } else {
             restoredAdapterState = state.adapterState
@@ -129,7 +142,8 @@ class ViewSwapper @JvmOverloads constructor(
     }
 
     private fun addNewItem(position: Int): ItemInfo {
-        val ii = ItemInfo(position = position)
+        val ii = ItemInfo()
+        ii.position = position
         if (position < 0 || position >= items.size) {
             items.add(ii)
         } else {
@@ -197,10 +211,7 @@ class ViewSwapper @JvmOverloads constructor(
 
         items.sortBy { it?.position }
 
-        if (needPopulate) {
-            showItemInternal(newCurrItem)
-            requestLayout()
-        }
+        if (needPopulate) showItemInternal(newCurrItem)
     }
 
     @SuppressLint("ParcelCreator")
@@ -211,5 +222,5 @@ class ViewSwapper @JvmOverloads constructor(
         val superState: Parcelable?
     ) : Parcelable
     
-    private data class ItemInfo(var item: Any? = null, var position: Int)
+    private data class ItemInfo(var item: Any? = null, var position: Int = 0)
 }

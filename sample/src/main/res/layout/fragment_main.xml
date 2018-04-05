@@ -23,7 +23,6 @@
     android:gravity="center"
     tools:context="com.ivianuu.adaptablenavigation.sample.MainActivity">
 
-
     <Button
         android:id="@+id/bottom_bar"
         android:layout_width="wrap_content"
